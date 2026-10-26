@@ -5,13 +5,14 @@ Thanks for taking a look. This is a small plugin and the rules are small too.
 ## Before you change anything
 
 ```sh
-node scripts/check.mjs
+npm run check
 ```
 
 There is no install step and no build step, so this runs in a bare checkout. It
 parses every shipped JavaScript and JSON file, then verifies that the manifest
 wiring (`exports`, `files`, `dsh.bundle.patch`), the Client module id, and the
-Host exports all still agree. **A pull request that fails this check will not be
+Host exports all still agree, then runs the HTTP and component-state regression
+tests with controlled provider responses. **A pull request that fails this check will not be
 merged.**
 
 ## Project shape

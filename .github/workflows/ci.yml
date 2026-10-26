@@ -1,0 +1,76 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: Check (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        # Windows is included on purpose: the plugin is used on Windows, and the
+        # checks cover package wiring, HTTP behavior and composer state.
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node: [20, 22, 24]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node }}
+
+      # There is nothing to install: the package has no dependencies and no
+      # build step. That absence is itself a contract, so it is asserted here.
+      - name: Assert no dependencies to install
+        shell: bash
+        run: |
+          node -e "
+            const p = require('./package.json');
+            const deps = Object.keys(p.dependencies ?? {});
+            const dev = Object.keys(p.devDependencies ?? {});
+            if (deps.length || dev.length) {
+              console.error('This package must stay dependency-free.', { deps, dev });
+              process.exit(1);
+            }
+            console.log('dependency-free: ok');
+          "
+
+      - name: Assert no build step
+        shell: bash
+        run: |
+          node -e "
+            const p = require('./package.json');
+            const forbidden = ['prepublishOnly', 'prepare', 'prepack', 'build'];
+            const hits = forbidden.filter((s) => p.scripts && p.scripts[s]);
+            if (hits.length) {
+              console.error('This package must not build on install.', hits);
+              process.exit(1);
+            }
+            console.log('no build step: ok');
+          "
+
+      - name: Run checks
+        run: npm run check
+
+      - name: Verify the Host half is valid ESM
+        shell: bash
+        # `--input-type` is only accepted with --eval, --print, or STDIN — passing
+        # it alongside a file path is a hard error (ERR_INPUT_TYPE_NOT_ALLOWED).
+        # package.json declares "type": "module", so --check already parses
+        # src/index.js as ESM without any extra flag.
+        run: node --check src/index.js
+
+      - name: Verify the Client half is a classic script
+        shell: bash
+        run: node --check src/client.js

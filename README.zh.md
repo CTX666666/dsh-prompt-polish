@@ -46,9 +46,14 @@
 
 ## 安装
 
+先克隆**整个仓库**（包含所有子目录），再安装这个本地目录：
+
 ```sh
-dsh plugin --profile <你的profile> add /path/to/prompt-polish-github
+git clone https://github.com/CTX666666/dsh-prompt-polish.git
+dsh plugin --profile <你的profile> add /path/to/dsh-prompt-polish
 ```
+
+Windows 路径含空格时使用双引号包裹。也可下载 GitHub 的完整 ZIP 并解压；不要只下载根目录文件。
 
 或用插件管理器指向本目录。bundle 自带 `dsh.bundle.patch`，安装时一步插入 Host 行与 Client bundle，无需额外注册。
 
@@ -113,10 +118,10 @@ dsh-prompt-polish/
 ## 自检
 
 ```sh
-node scripts/check.mjs
+npm run check
 ```
 
-解析全部随包发布的 JavaScript 与 JSON 文件，再交叉核对 `exports`、`files`、`dsh.bundle.patch` 是否指向真实存在的文件、Client 模块 id 是否等于包名、Host 半边是否仍导出 `inject` 与 `apply`。不需要 `npm install`。
+解析 JavaScript 与 JSON、核对清单指向的文件，再运行 27 项 HTTP 和组件状态回归测试。不需要 `npm install`。单独运行 `node scripts/check.mjs` 只检查语法与文件清单；这些测试使用受控模型输出，不代表真实 Harness 安装及模型服务已经完成端到端验收。
 
 ## 它如何调用模型
 
@@ -124,7 +129,9 @@ node scripts/check.mjs
 2. Host 选定路由（见上文「它做什么」），拼出系统提示、用户提示、风格指令与最近上下文块。
 3. 一次 `ctx.llm.stream()` 调用，`temperature: 1`。只累加 `text-delta` 分片；`finish` 为 `kind: 'error' | 'aborted'` 时按失败上报。
 4. 结果先清洗（剥掉一层围栏代码块或包裹引号），再过忠实度守卫。失败时附带明确纠正说明重试一次，说明里点名缺失的 token 和长度上限。
-5. 返回 `{ ok: true, text, provider, model, style, fidelity, contextUsed }`，或 `{ ok: false, code, error }`，`code` 取值 `empty_input`、`no_model`、`llm_error`、`aborted`、`empty_result`、`invalid_request`、`not_found`、`method_not_allowed`、`internal`。
+5. 返回 `{ ok: true, text, provider, model, style, fidelity, contextUsed }`，或 `{ ok: false, code, error }`，`code` 取值 `empty_input`、`no_model`、`llm_error`、`aborted`、`empty_result`、`fidelity_failed`、`invalid_request`、`not_found`、`method_not_allowed`、`internal`。一次修正后保真仍失败时不返回替换文本，保留原草稿。
+
+润色期间编辑草稿、切换会话或进入提交阶段会使旧请求失效。取消请求会通知 Host 中止上游生成；首次调用与修正重试共用 60 秒时限。
 
 只读 `text-delta` 与 `finish`，所以流式返回推理块的上游不会带来额外开销。
 
@@ -141,7 +148,7 @@ Client 半边面向 `@deepseek-ai/dsh-client-ui-conversation` 声明的插槽契
 
 ## 贡献
 
-见 [CONTRIBUTING.md](CONTRIBUTING.md)。一句话：`node scripts/check.mjs` 必须通过，行为变更需要在 [CHANGELOG.md](CHANGELOG.md) 里补一句说明。
+见 [CONTRIBUTING.md](CONTRIBUTING.md)。一句话：`npm run check` 必须通过，行为变更需要在 [CHANGELOG.md](CHANGELOG.md) 里补一句说明。
 
 ## 仓库地址
 
@@ -149,15 +156,7 @@ Client 半边面向 `@deepseek-ai/dsh-client-ui-conversation` 声明的插槽契
 git clone https://github.com/CTX666666/dsh-prompt-polish.git
 ```
 
-清单里的 `repository`、`homepage`、`bugs`、`author` 已经指向这个地址，克隆下来可以直接推：
-
-```sh
-git init -b main
-git add -A
-git commit -m "feat: Work Buddy style prompt-polish button for DSH"
-git remote add origin git@github.com:CTX666666/dsh-prompt-polish.git
-git push -u origin main
-```
+清单里的 `repository`、`homepage`、`bugs`、`author` 已指向该仓库。安装者只需克隆和安装，无需初始化仓库或推送文件。
 
 `package.json` 故意保留 `"private": true`：本插件的分发形式是一个由 DSH profile 安装的目录
 （或 git URL），不是 npm 上的包。该标记只是防止误 `npm publish`，不影响 clone、fork 与安装。

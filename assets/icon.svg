@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="Prompt Polish">
+  <defs>
+    <linearGradient id="pp-bg" x1="0" y1="0" x2="64" y2="64" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#4f7cff"/>
+      <stop offset="1" stop-color="#7a4dff"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="16" fill="url(#pp-bg)"/>
+  <path fill="#ffffff" fill-opacity="0.95" d="M25.5 15.6c1.3-2.9 5.4-2.6 6.2 0.5l2.4 8.4c0.5 1.7 1.8 3 3.5 3.5l8.4 2.6c2.9 0.9 2.6 5-0.3 5.8l-7.5 2.2c-2.5 0.8-4.4 2.7-5.2 5.2l-2.4 7.5c-0.9 2.9-5 2.7-5.8-0.2l-2.3-8c-0.5-1.6-1.7-2.8-3.3-3.3l-8-2.4c-2.9-0.9-2.6-5 0.3-5.8l7.6-2.2c2.5-0.8 4.4-2.7 5.2-5.2z"/>
+  <path fill="#ffffff" fill-opacity="0.9" d="M47.6 11.2c0.4-1 1.8-0.9 2 0.1l0.6 2.5c0.1 0.5 0.5 0.9 1 1l2.5 0.8c1 0.3 0.9 1.7-0.1 2l-2.2 0.6c-0.7 0.2-1.2 0.7-1.5 1.4l-0.7 2.1c-0.3 1-1.7 0.9-2-0.1l-0.6-2.3c-0.2-0.6-0.6-1-1.1-1.2l-2.3-0.7c-1-0.3-0.9-1.7 0.1-2l2.2-0.6c0.7-0.2 1.2-0.7 1.4-1.4z"/>
+</svg>

@@ -1,6 +1,6 @@
 {
   "name": "@local/prompt-polish",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Work Buddy style prompt-polish button in the DSH composer; the polish call uses the model of the conversation it sits in.",
   "type": "module",
   "license": "MIT",
@@ -30,6 +30,7 @@
   "files": [
     "src/index.js",
     "src/client.js",
+    "scripts/*.mjs",
     "cordis.patch.yml",
     "locale/*.json",
     "assets/icon.svg",
@@ -53,7 +54,8 @@
     }
   },
   "scripts": {
-    "check": "node scripts/check.mjs"
+    "check": "node scripts/check.mjs && node --test scripts/host.test.mjs scripts/client.test.mjs",
+    "test": "node --test scripts/host.test.mjs scripts/client.test.mjs"
   },
   "engines": {
     "node": ">=20"

@@ -1,0 +1,6 @@
+{
+  "meta": {
+    "title": "Prompt Polish",
+    "description": "Adds a Work Buddy style polish button to the composer. It rewrites the draft into a clearer prompt with the model the current conversation already uses."
+  }
+}

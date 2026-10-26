@@ -5,6 +5,23 @@ All notable changes to this project are documented here.
 The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.0.1] — 2026-10-26
+
+### Fixed
+
+- Restore the missing source, locales, icon, scripts, implementation guide and
+  CI files in the GitHub distribution.
+- Reject rewrites that still fail fidelity after one retry; preserve exact
+  identifier case, filenames, Chinese paths and single-digit quantities.
+- Keep recent context in chronological order while prioritizing the newest turns.
+- Preserve literal replacement markers and dollar sequences in drafts.
+- Ignore late results after edits, navigation, submission, cancellation or
+  unmount; clear undo on session changes and remove closed-menu listeners.
+- Propagate browser disconnects to upstream generation, share a 60-second request
+  timeout across retries, and reject invalid bodies and empty provider registries.
+- Include the dependency-free checks in packed distributions and run 27 HTTP and
+  component-state regression tests in the CI matrix.
+
 ## [1.0.0] — 2026-10-22
 
 First packaged release. The behaviour is unchanged from the working plugin this

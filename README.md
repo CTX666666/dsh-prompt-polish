@@ -59,9 +59,15 @@ key, and closes on outside press, <kbd>Esc</kbd>, or window blur.
 
 ## Install
 
+Clone the **entire repository**, including all subdirectories, then install that directory:
+
 ```sh
-dsh plugin --profile <your-profile> add /path/to/prompt-polish-github
+git clone https://github.com/CTX666666/dsh-prompt-polish.git
+dsh plugin --profile <your-profile> add /path/to/dsh-prompt-polish
 ```
+
+Quote Windows paths containing spaces. GitHub's complete ZIP also works after
+extraction; downloading only the root files does not produce a usable plugin.
 
 Or point the plugin manager at this directory. The bundle declares its own
 `dsh.bundle.patch`, so installing it inserts the Host row and the Client bundle
@@ -144,13 +150,13 @@ that document.
 ## Verify
 
 ```sh
-node scripts/check.mjs
+npm run check
 ```
 
-Parses every shipped JavaScript and JSON file, then cross-checks that
-`exports`, `files`, and `dsh.bundle.patch` point at files that exist, that the
-Client module id equals the package name, and that the Host half still exports
-`inject` and `apply`. No `npm install` required.
+Checks syntax and manifest wiring, then runs 27 HTTP and component-state
+regression tests. No `npm install` required. Running `node scripts/check.mjs`
+alone only checks syntax and package files. Tests use controlled model outputs;
+they do not establish end-to-end acceptance in a live Harness/model service.
 
 ## How it calls the model
 
@@ -165,8 +171,13 @@ Client module id equals the package name, and that the Host half still exports
    correction note naming the missing tokens and the length limit.
 5. The response is `{ ok: true, text, provider, model, style, fidelity, contextUsed }`,
    or `{ ok: false, code, error }` with `code` one of `empty_input`, `no_model`,
-   `llm_error`, `aborted`, `empty_result`, `invalid_request`, `not_found`,
-   `method_not_allowed`, `internal`.
+   `llm_error`, `aborted`, `empty_result`, `fidelity_failed`, `invalid_request`,
+   `not_found`, `method_not_allowed`, `internal`. A failed corrective retry
+   preserves the original draft and never returns rejected replacement text.
+
+Editing the draft, navigating to another session or submitting invalidates an
+in-flight result. Cancelling disconnects the Host request and aborts upstream
+generation; the initial call and corrective retry share a 60-second deadline.
 
 Only `text-delta` and `finish` are read, so a provider that streams reasoning
 blocks costs nothing extra.
@@ -190,7 +201,7 @@ is wrapped in `ctx.effect`, so it is disposed cleanly on unload.
 
 ## Contributing
 
-See [CONTRIBUTING.md](CONTRIBUTING.md). In short: `node scripts/check.mjs` must
+See [CONTRIBUTING.md](CONTRIBUTING.md). `npm run check` must
 pass, and behaviour changes need a sentence in [CHANGELOG.md](CHANGELOG.md).
 
 ## Repository
@@ -199,16 +210,8 @@ pass, and behaviour changes need a sentence in [CHANGELOG.md](CHANGELOG.md).
 git clone https://github.com/CTX666666/dsh-prompt-polish.git
 ```
 
-The manifest already points at this location (`repository`, `homepage`, `bugs`,
-`author`), so the checkout is ready to push as-is:
-
-```sh
-git init -b main
-git add -A
-git commit -m "feat: Work Buddy style prompt-polish button for DSH"
-git remote add origin git@github.com:CTX666666/dsh-prompt-polish.git
-git push -u origin main
-```
+The manifest already points at this repository. Installation requires cloning
+and installing the directory; users do not need to initialize or push a repository.
 
 `package.json` keeps `"private": true` on purpose: this plugin is distributed as a
 directory (or a git URL) that a DSH profile installs, not as a package on the npm
