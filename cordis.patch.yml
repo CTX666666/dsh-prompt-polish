@@ -1,0 +1,10 @@
+# Prompt Polish bundle patch.
+#
+# One Host row serves the polish call (src/index.js) and one Client bundle
+# renders the button in the composer's trailing control seat (src/client.js).
+# The `name` below is the package name, resolved by the profile that installed
+# this bundle; it is not a filesystem path, so moving files inside the package
+# does not affect it.
+- insert:
+    - id: prompt-polish
+      name: '@local/prompt-polish'

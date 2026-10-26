@@ -1,0 +1,62 @@
+{
+  "name": "@local/prompt-polish",
+  "version": "1.0.0",
+  "description": "Work Buddy style prompt-polish button in the DSH composer; the polish call uses the model of the conversation it sits in.",
+  "type": "module",
+  "license": "MIT",
+  "author": "CTX666666",
+  "homepage": "https://github.com/CTX666666/dsh-prompt-polish#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CTX666666/dsh-prompt-polish.git"
+  },
+  "bugs": {
+    "url": "https://github.com/CTX666666/dsh-prompt-polish/issues"
+  },
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "prompt",
+    "prompt-engineering",
+    "workbuddy"
+  ],
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./client": "./src/client.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./assets/icon.svg"
+  },
+  "files": [
+    "src/index.js",
+    "src/client.js",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "assets/icon.svg",
+    "docs/IMPLEMENTATION.md",
+    "README.md",
+    "README.zh.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "immediately": true,
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-conversation",
+        "@deepseek-ai/dsh-client-locale"
+      ]
+    }
+  },
+  "scripts": {
+    "check": "node scripts/check.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "private": true
+}
