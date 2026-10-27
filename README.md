@@ -59,7 +59,14 @@ key, and closes on outside press, <kbd>Esc</kbd>, or window blur.
 
 ## Install
 
-Clone the **entire repository**, including all subdirectories, then install that directory:
+Install straight from GitHub — one command, nothing to clone:
+
+```sh
+dsh plugin add github:CTX666666/dsh-prompt-polish
+```
+
+Or clone the **entire repository**, including all subdirectories, and install
+that directory:
 
 ```sh
 git clone https://github.com/CTX666666/dsh-prompt-polish.git
@@ -69,9 +76,8 @@ dsh plugin --profile <your-profile> add /path/to/dsh-prompt-polish
 Quote Windows paths containing spaces. GitHub's complete ZIP also works after
 extraction; downloading only the root files does not produce a usable plugin.
 
-Or point the plugin manager at this directory. The bundle declares its own
-`dsh.bundle.patch`, so installing it inserts the Host row and the Client bundle
-in one step; no separate registration.
+Either way the bundle declares its own `dsh.bundle.patch`, so installing it
+inserts the Host row and the Client bundle in one step; no separate registration.
 
 After installing, the button appears the next time the composer renders. No
 rebuild and no extra dependency are needed — see below.

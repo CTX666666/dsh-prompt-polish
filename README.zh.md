@@ -46,7 +46,13 @@
 
 ## 安装
 
-先克隆**整个仓库**（包含所有子目录），再安装这个本地目录：
+直接从 GitHub 安装，一条命令，不用克隆：
+
+```sh
+dsh plugin add github:CTX666666/dsh-prompt-polish
+```
+
+或者克隆**整个仓库**（包含所有子目录），再安装这个本地目录：
 
 ```sh
 git clone https://github.com/CTX666666/dsh-prompt-polish.git
@@ -55,7 +61,7 @@ dsh plugin --profile <你的profile> add /path/to/dsh-prompt-polish
 
 Windows 路径含空格时使用双引号包裹。也可下载 GitHub 的完整 ZIP 并解压；不要只下载根目录文件。
 
-或用插件管理器指向本目录。bundle 自带 `dsh.bundle.patch`，安装时一步插入 Host 行与 Client bundle，无需额外注册。
+两种方式都一样：bundle 自带 `dsh.bundle.patch`，安装时一步插入 Host 行与 Client bundle，无需额外注册。
 
 装好后下次输入框渲染时按钮就会出现。不需要重新构建，也不需要额外依赖——原因见下。
 
